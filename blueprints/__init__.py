@@ -1,2 +1,3 @@
 from blueprints.auth import auth_blueprint
 from blueprints.user import user_blueprint
+from blueprints.custom_apps import custom_app_blueprint

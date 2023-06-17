@@ -8,13 +8,16 @@ from flask import Flask, request, render_template
 from flask_swagger_ui import get_swaggerui_blueprint
 from config.db_manager import DBManager
 from blueprints import *
-
+from data.seed_custom_app_data import seed_custom_app_data
 
 app = Flask(__name__)
 
 
 def register_blueprints(swagger_blueprint):
-    blueprints = [swagger_blueprint, auth_blueprint, user_blueprint]
+    blueprints = [
+        swagger_blueprint, auth_blueprint, 
+        user_blueprint, custom_app_blueprint
+        ]
     for blueprint in blueprints:
         app.register_blueprint(blueprint)
 
@@ -52,4 +55,5 @@ if __name__ == "__main__":
 
     swagger_blueprint = add_swagger_ui()
     register_blueprints(swagger_blueprint)
+    # seed_custom_app_data()
     app.run(host="0.0.0.0", port=os.getenv("PORT"), debug=True)
