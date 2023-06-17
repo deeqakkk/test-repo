@@ -1,0 +1,43 @@
+# eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiNjQ4Y2I1Mjg0Zjc0ODJiNDAwNWNhOWEwIiwiZW1haWwiOiJyYWpuZWVzaEBnbWFpbC5jb20ifQ.GT5tCxDPe0n4QJeDIuJXAFslT4iCCuGOZ-GR4LSFySA
+# eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiNjQ4Y2I1Mjg0Zjc0ODJiNDAwNWNhOWEwIiwiZW1haWwiOiJyYWpuZWVzaEBnbWFpbC5jb20ifQ.GT5tCxDPe0n4QJeDIuJXAFslT4iCCuGOZ-GR4LSFySA
+openapi: '3.0.3'
+info:
+  description: 'API Documentation'
+host: 'localhost:8080'
+tags:
+schemes:
+- http
+paths:
+  /test:
+    get:
+      tags:
+      - index
+      summary: index
+      description: platform test
+      operationId: index
+      responses:
+        '200':
+          description: successful operation
+        '400':
+          description: Invalid status value
+  /user:
+    get:
+      tags:
+      - user 
+      description: Get user data
+      operationId: getuser
+      security:
+        - token: []
+      responses:
+        '200':
+          description: successful operation
+        '400':
+          description: Invalid status value
+
+components:
+  securitySchemes:
+    token:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+
