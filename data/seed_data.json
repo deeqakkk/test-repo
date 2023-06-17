@@ -110,7 +110,8 @@
             {
                 "label": "Field 1",
                 "type": "text",
-                "required": true
+                "required": true,
+                "value": null
             },
             {
                 "label": "Field 2",

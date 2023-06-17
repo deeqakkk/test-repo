@@ -30,11 +30,13 @@ class CustomAppController:
             del app["_id"]
             response.append(app)
         
-        return response
+        return {"apps": response, "my_apps": []}
     
-    def get_app_by_id(self, app_id: dict):
-        app = CustomApp.find_one({"id": ObjectId(app_id)})
+    def get_app_by_id(self, app_id: str):
+        app = CustomApp.find_one({"_id": ObjectId(app_id)})
         if not app:
             return CustomError.APP_NOT_FOUND
+        app.id = str(app.id)
+        app._id = str(app._id)
         return app.dict()
 

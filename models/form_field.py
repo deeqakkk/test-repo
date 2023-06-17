@@ -10,6 +10,7 @@ class FieldType(Enum):
     CHECKBOX = "checkbox"
     TEXTAREA = "textarea"
     SELECT = "select"
+    FILE = "file"
 
 
 class FieldMeta(Document):
@@ -31,6 +32,7 @@ class FormField(Document):
     required: bool = False
     meta: FieldMeta = FieldMeta()
     options: list[str] = []
+    value: str = None
 
     def __init__(self, **data):
         super().__init__(**data)
