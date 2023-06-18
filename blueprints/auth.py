@@ -1,4 +1,5 @@
-from flask import request, Blueprint
+from flask import request, Blueprint, redirect
+from utils.errors import CustomError
 from utils.response_utils import compose_response
 from controllers.auth import AuthController
 
@@ -10,4 +11,6 @@ def login():
     email = request.form.get('email')
     password = request.form.get('password')
     response = ac.authenticate(email, password)
-    return compose_response(response)
+    if isinstance(response, CustomError):
+        return compose_response(response)
+    return redirect(location="/apps")

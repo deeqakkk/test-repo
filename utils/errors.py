@@ -14,4 +14,4 @@ class CustomError(Error):
     INVALID_CREDENTIALS = (402,'Invalid Credentials')
     USER_NOT_FOUND = (404, "User not found")
     USERS_NOT_FOUND = (404, "Users not found")
-    
+    APP_NOT_FOUND = (404, "App not found")

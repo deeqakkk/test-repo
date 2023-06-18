@@ -1,0 +1,533 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>App Showcase</title>
+    <style>
+      /* Styles for the app cards */
+      .app-card {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        padding: 20px;
+        border-radius: 8px;
+        background-color: #f5f5f5;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        text-align: center;
+      }
+
+      .app-card img {
+        width: 80px;
+        height: 80px;
+        object-fit: cover;
+        border-radius: 50%;
+        margin-bottom: 10px;
+      }
+
+      .app-card h3 {
+        margin-bottom: 5px;
+        font-size: 18px;
+      }
+
+      .app-card p {
+        color: #777;
+        font-size: 14px;
+      }
+
+      /* Styles for the app container */
+      .app-container {
+        display: flex;
+        /* flex-wrap: wrap; */
+        justify-content: center;
+        gap: 20px;
+        margin-top: 40px;
+      }
+
+      /* Modal styles */
+      .modal {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(53, 53, 53, 0.8);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        z-index: 9999;
+        visibility: hidden;
+        opacity: 0;
+        transition: visibility 0s linear 0.25s, opacity 0.25s;
+      }
+
+      .modal-content {
+        background-color: #dedcdc;
+        padding: 20px;
+        border-radius: 8px;
+        max-width: 1000px;
+        text-align: center;
+        position: relative;
+      }
+
+      .modal-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 20px;
+      }
+
+      .modal-title {
+        font-size: 24px;
+      }
+
+      .modal-close {
+        cursor: pointer;
+        font-size: 20px;
+        color: #888;
+      }
+
+      .modal-body {
+        margin-bottom: 20px;
+      }
+
+      /* Modal trigger styles */
+      .app-card {
+        /* Your app card styles here */
+        margin-bottom: 15px;
+        width: 200px;
+        display: flex;
+        flex-direction: column;
+      }
+
+      .app-card .app-details-btn {
+        cursor: pointer;
+        background-color: #f5f5f5;
+        color: #888;
+        border: none;
+        border-radius: 4px;
+        padding: 8px 12px;
+        font-size: 14px;
+      }
+
+      .app-card .app-details-btn:hover {
+        background-color: #e0e0e0;
+      }
+
+      .app-card .configure-btn {
+        cursor: pointer;
+        background-color: #f5f5f5;
+        color: #626060;
+        border: none;
+        border-radius: 4px;
+        padding: 8px 12px;
+        font-size: 14px;
+      }
+
+      .app-card .configure-btn:hover {
+        background-color: #ccc9c9;
+      }
+      /* tab css */
+
+      .tab-container {
+        max-width: 2000px;
+        margin: 0 auto;
+      }
+
+      .tab-header {
+        display: flex;
+        justify-content: center;
+        margin-bottom: 20px;
+      }
+
+      .tab-button {
+        background-color: #f1f1f1;
+        border: none;
+        outline: none;
+        cursor: pointer;
+        padding: 10px 20px;
+        margin-right: 10px;
+        border-radius: 5px 5px 0 0;
+      }
+
+      .tab-button:hover {
+        background-color: #ddd;
+      }
+
+      .tab-button.active {
+        background-color: #ccc;
+      }
+
+      .tab-content {
+        width: 900px;
+        display: flex;
+        flex-wrap: wrap;
+        list-style: none;
+        padding: 20px;
+        background-color: #f1f1f1;
+        border-radius: 0 5px 5px 5px;
+      }
+
+      /* Show the active tab content */
+      .tab-content.show {
+        display: block;
+      }
+    </style>
+  </head>
+  <body>
+    {% set custom_apps = apps.apps %} {% set selected_app = None %}
+
+    <div class="app-container">
+      <div class="tab-container">
+        <div class="tab-header">
+          <button class="tab-button active" onclick="openTab(event, 'tab1')">
+            All Apps
+          </button>
+          <button class="tab-button" onclick="openTab(event, 'tab2')">
+            My Apps
+          </button>
+        </div>
+
+        <div id="tab1" class="tab-content">
+          {% for app in apps.apps %}
+          <!-- App card -->
+          <div class="app-card">
+            <img src="{{ app.display_image }}" alt="{{ app.name }} icon" />
+            <h3>{{ app.name }}</h3>
+            <p>{{ app.category }}</p>
+            <p>{{ app.description }}</p>
+
+            <button class="configure-btn" onclick="openModal2('{{app.name}}')">
+              Configure
+            </button>
+            <button
+              class="app-details-btn"
+              onclick="openModal('{{ app.name }}')"
+            >
+              View Details
+            </button>
+          </div>
+          {% endfor %}
+        </div>
+
+        <div id="tab2" class="tab-content">
+          {% for app in apps.my_apps %}
+          <!-- App card -->
+          <div class="app-card">
+            <img src="{{ app.display_image }}" alt="{{ app.name }} icon" />
+            <h3>{{ app.name }}</h3>
+            <p>{{ app.category }}</p>
+            <p>{{ app.description }}</p>
+
+            <button
+              class="app-details-btn"
+              onclick="openModal('{{ app.name }}')"
+            >
+              View Details
+            </button>
+          </div>
+          {% endfor %}
+        </div>
+      </div>
+    </div>
+
+    <!-- App details modal -->
+    <div id="app-details-modal" class="modal">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h2 class="modal-title" id="app-details-title"></h2>
+          <span class="modal-close" onclick="closeModal()">&times;</span>
+        </div>
+        <div class="modal-body">
+          <p>
+            <strong>Description:</strong>
+            <span id="app-details-description"></span>
+          </p>
+          <p>
+            <strong>Category:</strong> <span id="app-details-category"></span>
+          </p>
+          <p>
+            <strong>Developer:</strong> <span id="app-details-developer"></span>
+          </p>
+          <p>
+            <strong>Date Published:</strong>
+            <span id="app-details-date-published"></span>
+          </p>
+          <p>
+            <strong>Date Updated:</strong>
+            <span id="app-details-date-updated"></span>
+          </p>
+          <p>
+            <img src="" alt="" id="image1" width="100px" />
+            <img src="" alt="" id="image2" width="100px" />
+          </p>
+
+          <!-- Add more details as needed -->
+        </div>
+      </div>
+    </div>
+
+    <!-- Configuration Modal -->
+    <div
+      class="modal fade"
+      id="formModal"
+      tabindex="-1"
+      role="dialog"
+      aria-labelledby="formModalLabel"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="formModalLabel" value=""></h5>
+            <button
+              type="button"
+              class="close"
+              data-dismiss="modal"
+              aria-label="Close"
+              onclick="closeConfigureModal()"
+            >
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <form id="dynamicForm" method="POST" onsubmit="createUserApp()">
+              <div id="formFields"></div>
+              <div class="modal-footer">
+                <button
+                  type="button"
+                  class="btn btn-secondary"
+                  onclick="closeConfigureModal()"
+                >
+                  Close
+                </button>
+                <button
+                  type="submit"
+                  form="dynamicForm"
+                  class="btn btn-primary"
+                >
+                  Submit
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      function createUserApp(appId) {
+        const appName = document.getElementById("formModalLabel").innerText;
+        const app = findAppByName(appName);
+        var formData = new FormData(document.getElementById("dynamicForm"));
+        var jsonData = {};
+        formData.forEach(function (value, key) {
+          jsonData[key] = value;
+        });
+        jsonData["app_id"] = app.id;
+
+        var xhr = new XMLHttpRequest();
+        xhr.open("POST", "/apps/user/create", true);
+        xhr.setRequestHeader("Content-Type", "application/json");
+
+        xhr.onreadystatechange = function () {
+          if (xhr.readyState === XMLHttpRequest.DONE && xhr.status === 200) {
+            console.log(xhr.responseText);
+          }
+        };
+        xhr.send(JSON.stringify(jsonData));
+      }
+      function openModal(appName) {
+        const app = findAppByName(appName);
+        if (app) {
+          const modal = document.getElementById("app-details-modal");
+          const modalTitle = document.getElementById("app-details-title");
+          const modalDescription = document.getElementById(
+            "app-details-description"
+          );
+          const modalCategory = document.getElementById("app-details-category");
+          const modalDeveloper = document.getElementById(
+            "app-details-developer"
+          );
+          const modalDatePublished = document.getElementById(
+            "app-details-date-published"
+          );
+          const modalDateUpdated = document.getElementById(
+            "app-details-date-updated"
+          );
+          const image1 = document.getElementById("image1");
+          const image2 = document.getElementById("image2");
+
+          modalTitle.textContent = app.name;
+          modalDescription.textContent = app.description;
+          modalCategory.textContent = app.category;
+          modalDeveloper.textContent = app.app_info.developer;
+          modalDatePublished.textContent = new Date(
+            app.app_info.date_published
+          );
+          modalDateUpdated.textContent = new Date(app.app_info.date_updated);
+          image1.src = app.images[0];
+          image2.src = app.images[1];
+          modal.style.visibility = "visible";
+          modal.style.opacity = "1";
+        }
+      }
+
+      function closeModal() {
+        const modal = document.getElementById("app-details-modal");
+        modal.style.visibility = "hidden";
+        modal.style.opacity = "0";
+      }
+
+      function findAppByName(appName) {
+        const apps = JSON.parse(`{{custom_apps | tojson}}`);
+        return apps.find((app) => app.name === appName);
+      }
+
+      function configure(appName) {
+        var app = findAppByName(appName);
+        if (app) {
+          console.log("##", app);
+          var xhr = new XMLHttpRequest();
+          xhr.open("POST", "/apps/configure", true);
+          xhr.setRequestHeader("Content-Type", "application/json");
+
+          xhr.onreadystatechange = function () {
+            if (xhr.readyState === XMLHttpRequest.DONE && xhr.status === 200) {
+              // Request completed successfully
+              console.log(xhr.responseText);
+            }
+          };
+
+          console.log("-->", app);
+          xhr.send(JSON.stringify(app));
+        }
+      }
+
+      function openTab(evt, tabName) {
+        var tabContents = document.getElementsByClassName("tab-content");
+        for (var i = 0; i < tabContents.length; i++) {
+          tabContents[i].style.display = "none";
+        }
+        var tabButtons = document.getElementsByClassName("tab-button");
+        for (var i = 0; i < tabButtons.length; i++) {
+          tabButtons[i].className = tabButtons[i].className.replace(
+            " active",
+            ""
+          );
+        }
+        document.getElementById(tabName).style.display = "block";
+        evt.currentTarget.className += " active";
+      }
+      document.getElementById("tab1").style.display = "block";
+      document.getElementById("tab2").style.display = "None";
+
+      function getFormFields(appName) {
+        var app = findAppByName(appName);
+        if (app) {
+          var xhr = new XMLHttpRequest();
+          xhr.open("POST", "/apps/configure", true);
+          xhr.setRequestHeader("Content-Type", "application/json");
+
+          xhr.onreadystatechange = function () {
+            if (xhr.readyState === XMLHttpRequest.DONE && xhr.status === 200) {
+              // Request completed successfully
+              const response = JSON.parse(xhr.responseText);
+              console.log(response);
+              const formFields = response.data.form_fields;
+
+              const formFieldsContainer = document.getElementById("formFields");
+              document.getElementById("formModalLabel").innerText = app.name;
+              // Iterate over the form fields and create the corresponding HTML elements
+              formFields.forEach((field) => {
+                const fieldContainer = document.createElement("div");
+                fieldContainer.classList.add("form-group");
+
+                const label = document.createElement("label");
+                label.setAttribute("for", field.name);
+                label.innerText = field.label;
+                fieldContainer.appendChild(label);
+
+                let input;
+                if (
+                  field.type === "text" ||
+                  field.type === "number" ||
+                  field.type === "password" ||
+                  field.type === "email"
+                ) {
+                  input = document.createElement("input");
+                  input.setAttribute("type", field.type);
+                  input.setAttribute("id", field.name);
+                  input.setAttribute("name", field.name);
+                  input.setAttribute("placeholder", field.placeholder);
+                  if (field.required) {
+                    input.setAttribute("required", "");
+                  }
+                } else if (field.type === "checkbox") {
+                  input = document.createElement("input");
+                  input.setAttribute("type", "checkbox");
+                  input.setAttribute("id", field.name);
+                  input.setAttribute("name", field.name);
+                  if (field.required) {
+                    input.setAttribute("required", "");
+                  }
+                } else if (field.type === "textarea") {
+                  input = document.createElement("textarea");
+                  input.setAttribute("id", field.name);
+                  input.setAttribute("name", field.name);
+                  input.setAttribute("placeholder", field.placeholder);
+                  if (field.required) {
+                    input.setAttribute("required", "");
+                  }
+                } else if (field.type === "select") {
+                  input = document.createElement("select");
+                  input.setAttribute("id", field.name);
+                  input.setAttribute("name", field.name);
+                  if (field.required) {
+                    input.setAttribute("required", "");
+                  }
+                  console.log("====", field.options);
+                  field.options.forEach((option) => {
+                    const optionElement = document.createElement("option");
+                    optionElement.setAttribute("value", option);
+                    optionElement.innerText = option;
+                    input.appendChild(optionElement);
+                  });
+                }
+
+                fieldContainer.appendChild(input);
+                if (field.helper_text) {
+                  const small = document.createElement("small");
+                  small.innerText = field.helper_text;
+                  fieldContainer.appendChild(small);
+                }
+
+                formFieldsContainer.appendChild(fieldContainer);
+              });
+            }
+          };
+        }
+        xhr.send(JSON.stringify(app));
+      }
+
+      function closeConfigureModal() {
+        const modal = document.getElementById("formModal");
+        modal.style.visibility = "hidden";
+        modal.style.opacity = "0";
+        const formFieldsContainer = document.getElementById("formFields");
+        while (formFieldsContainer.hasChildNodes()) {
+          formFieldsContainer.removeChild(formFieldsContainer.firstChild);
+        }
+      }
+
+      function openModal2(appName) {
+        getFormFields(appName);
+        // $("#formModal").modal("show");
+        const modal = document.getElementById("formModal");
+        modal.style.visibility = "visible";
+        modal.style.opacity = "1";
+      }
+    </script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  </body>
+</html>

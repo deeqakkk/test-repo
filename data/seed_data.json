@@ -1,0 +1,145 @@
+[
+    {
+        "name": "App 1",
+        "description": "This is the first custom app.",
+        "category": "Category 1",
+        "images": [
+            "https://images.koji-cdn.com/38cd1fe6-d8f7-4304-b768-e032733f0d2b/n946u-Store2.png",
+            "https://images.koji-cdn.com/38cd1fe6-d8f7-4304-b768-e032733f0d2b/n946u-Store2.png"
+        ],
+        "display_image": "https://images.koji-cdn.com/generic/pLFxl4a4jEVMsd8XurcsvYVknBV2_1677002963290.png?fm=webp&w=180",
+        "form_fields": [
+            {
+                "label": "Field 1",
+                "type": "text",
+                "required": true,
+                "meta": {
+                    "max_length": 90,
+                    "min_length": 5
+                },
+                "name": "name",
+                "placeholder": "Enter name"
+            },
+            {
+                "label": "Field 2",
+                "type": "number",
+                "required": false,
+                "helper_text": "Input a number in this field"
+            }
+        ],
+        "published": true,
+        "app_info": {
+            "developer": "Developer 1"
+        }
+    },
+    {
+        "name": "App 2",
+        "description": "This is the second custom app.",
+        "category": "Category 1",
+        "images": [
+            "image3.jpg",
+            "image4.jpg"
+        ],
+        "published": true,
+        "app_info": {
+            "developer": "Developer 2"
+        },
+        "display_image": "https://images.koji-cdn.com/generic/pLFxl4a4jEVMsd8XurcsvYVknBV2_1681838135704.jpg?fm=webp&w=180",
+        "form_fields": [
+            {
+                "label": "Field 1",
+                "type": "text",
+                "required": true
+            },
+            {
+                "label": "Field 2",
+                "type": "email",
+                "required": true
+            },
+            {
+                "label": "Field 3",
+                "type": "checkbox",
+                "required": false
+            }
+        ]
+    },
+    {
+        "name": "App 3",
+        "description": "This is the third custom app.",
+        "category": "Category 1",
+        "images": [
+            "image5.jpg"
+        ],
+        "published": true,
+        "app_info": {
+            "developer": "Developer 3"
+        },
+        "display_image": "https://images.koji-cdn.com/generic/pLFxl4a4jEVMsd8XurcsvYVknBV2_1681838135704.jpg?fm=webp&w=180",
+        "form_fields": [
+            {
+                "label": "Field 1",
+                "type": "text",
+                "required": true
+            },
+            {
+                "label": "Field 2",
+                "type": "password",
+                "required": true
+            },
+            {
+                "label": "Field 3",
+                "type": "textarea",
+                "required": false
+            }
+        ]
+    },
+    {
+        "name": "App 4",
+        "description": "This is the fourth custom app.",
+        "category": "Category 2",
+        "images": [
+            "image6.jpg",
+            "image7.jpg"
+        ],
+        "published": true,
+        "app_info": {
+            "developer": "Developer 4"
+        },
+        "display_image": "https://images.koji-cdn.com/generic/pLFxl4a4jEVMsd8XurcsvYVknBV2_1681838135704.jpg?fm=webp&w=180",
+        "form_fields": [
+            {
+                "label": "Field 1",
+                "type": "text",
+                "required": true,
+                "value": null
+            },
+            {
+                "label": "Field 2",
+                "type": "select",
+                "required": true,
+                "options": [
+                    "Option 1",
+                    "Option 2",
+                    "Option 3"
+                ]
+            }
+        ]
+    },
+    {
+        "name": "App 5",
+        "description": "This is the fifth custom app.",
+        "category": "Category 2",
+        "display_image": "https://images.koji-cdn.com/generic/pLFxl4a4jEVMsd8XurcsvYVknBV2_1681838135704.jpg?fm=webp&w=180",
+        "images": [
+            "image8.jpg",
+            "image9.jpg",
+            "image10.jpg"
+        ],
+        "developer": "Developer 5",
+        "form_fields": [],
+        "published": false,
+        "app_info": {
+            "developer": "Developer 5"
+        }
+    }
+]
