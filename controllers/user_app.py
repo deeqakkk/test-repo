@@ -16,7 +16,15 @@ class UserAppController:
             app["id"] = str(app["id"])
             del app["_id"]
             response.append(app)
+        response.sort(key = lambda x : -x["created_at"])
+
         return response
+    
+    def get_app_by_id(self, app_id, user_id):
+        app = UserApps.find_one({"parent": app_id, "user_id": user_id})
+        if not app:
+            return CustomError.APP_NOT_FOUND
+        return app.dict()
     
     def create_user_app(self, data):
         print(data)

@@ -143,3 +143,85 @@
         }
     }
 ]
+
+
+// {
+//     "name": "Twitter",
+//     "description": "This is the second custom app.",
+//     "category": "Social",
+//     "display_image": "https://upload.wikimedia.org/wikipedia/hi/6/65/Twitter_bird_logo_2012.svg.png?20170213082034",
+//     "images": [
+//         "https://sm.mashable.com/t/mashable_in/news/t/twitt…mage-previews-on-mobile-ruins-the-s_tqry.2496.jpg"
+//     ],
+//     "form_fields": [
+//         {
+//             "type": "text",
+//             "label": "name",
+//             "required": true,
+//             "meta": {
+//                 "max_length": {
+//                     "$numberInt": "100"
+//                 },
+//                 "min_length": {
+//                     "$numberInt": "3"
+//                 }
+//             },
+//             "options": [],
+//             "value": null,
+//             "name": "name"
+//         },
+//         {
+//             "type": "email",
+//             "label": "Email",
+//             "required": true,
+//             "meta": {
+//                 "max_length": {
+//                     "$numberInt": "100"
+//                 },
+//                 "min_length": {
+//                     "$numberInt": "3"
+//                 }
+//             },
+//             "options": [],
+//             "value": null,
+//             "name": "email"
+//         },
+//         {
+//             "type": "checkbox",
+//             "label": "Select Yes or No",
+//             "required": false,
+//             "meta": {
+//                 "max_length": {
+//                     "$numberInt": "100"
+//                 },
+//                 "min_length": {
+//                     "$numberInt": "3"
+//                 }
+//             },
+//             "options": [],
+//             "value": null,
+//             "name": "checkbox"
+//         }
+//         {
+//             "type": "options",
+//             "label": "Gender",
+//             "required": true,
+//             "meta": {
+//                 "max_length": {
+//                     "$numberInt": "100"
+//                 },
+//                 "min_length": {
+//                     "$numberInt": "3"
+//                 }
+//             },
+//             "options": ["Male", "female"],
+//             "value": null,
+//             "name": "gender_options"
+//         }
+//     ],
+//     "app_info": {
+//         "developer": "@rajneesh",
+//         "version": "1.1.2"
+//     },
+//     "published": true
+// }

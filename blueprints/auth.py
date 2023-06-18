@@ -8,6 +8,8 @@ ac = AuthController()
 
 @auth_blueprint.route("/login", methods=["POST"])
 def login():
+    if not request.form:
+        request.form = request.json
     email = request.form.get('email')
     password = request.form.get('password')
     response = ac.authenticate(email, password)

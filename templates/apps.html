@@ -221,7 +221,7 @@
 
             <button
               class="app-details-btn"
-              onclick="openModal('{{ app.name }}')"
+              onclick="openModal3('{{ app.name }}')"
             >
               View Details
             </button>
@@ -263,6 +263,26 @@
           </p>
 
           <!-- Add more details as needed -->
+        </div>
+      </div>
+    </div>
+
+    <!-- User App Details modal-->
+
+    <div id="app-details-modal-2" class="modal">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h2 class="modal-title" id="app-details-title-2"></h2>
+          <span class="modal-close" onclick="closeModal3()">&times;</span>
+        </div>
+        <div class="modal-body">
+          <p>
+            <strong>Description:</strong>
+            <span id="app-details-description-2"></span>
+          </p>
+          <form id="dynamicFormView">
+            <div id="formFieldsView"></div>
+          </form>
         </div>
       </div>
     </div>
@@ -433,7 +453,6 @@
             if (xhr.readyState === XMLHttpRequest.DONE && xhr.status === 200) {
               // Request completed successfully
               const response = JSON.parse(xhr.responseText);
-              console.log(response);
               const formFields = response.data.form_fields;
 
               const formFieldsContainer = document.getElementById("formFields");
@@ -522,10 +541,74 @@
 
       function openModal2(appName) {
         getFormFields(appName);
-        // $("#formModal").modal("show");
         const modal = document.getElementById("formModal");
         modal.style.visibility = "visible";
         modal.style.opacity = "1";
+      }
+
+      async function openModal3(appName) {
+        const app = findAppByName(appName);
+        if (app) {
+          var xhr = new XMLHttpRequest();
+          xhr.open("GET", `/user_apps?app_id=${app.id}`, true);
+          xhr.setRequestHeader("Content-Type", "application/json");
+          xhr.onreadystatechange = function () {
+            if (xhr.readyState === XMLHttpRequest.DONE && xhr.status === 200) {
+              response = JSON.parse(xhr.responseText).data;
+              const formFields = response.form_fields;
+
+              const formFieldsContainer =
+                document.getElementById("formFieldsView");
+              document.getElementById("formModalLabel").innerText = app.name;
+
+              formFields.forEach((field) => {
+                const fieldContainer = document.createElement("div");
+                fieldContainer.classList.add("form-group");
+                const parentSpan = document.createElement("span");
+                const span1 = document.createElement("span");
+                const span2 = document.createElement("span");
+                const label = document.createElement("label");
+                label.setAttribute("for", field.name);
+                label.innerText = field.label;
+                const value = document.createElement("p");
+                value.setAttribute("for", field.name);
+                value.innerText = field.value;
+                span1.appendChild(label);
+                span2.appendChild(value);
+
+                parentSpan.appendChild(span1);
+                parentSpan.appendChild(span2);
+                parentSpan.style.display = "flex";
+                fieldContainer.appendChild(parentSpan);
+                formFieldsContainer.appendChild(fieldContainer);
+              });
+
+              console.log("#", formFieldsContainer);
+
+              const modal = document.getElementById("app-details-modal-2");
+              const modalTitle = document.getElementById("app-details-title-2");
+              const modalDescription = document.getElementById(
+                "app-details-description-2"
+              );
+              modalTitle.textContent = app.name;
+              modalDescription.textContent = app.description;
+
+              modal.style.visibility = "visible";
+              modal.style.opacity = "1";
+            }
+          };
+          xhr.send();
+        }
+      }
+
+      function closeModal3() {
+        const modal = document.getElementById("app-details-modal-2");
+        modal.style.visibility = "hidden";
+        modal.style.opacity = "0";
+        const formFieldsContainer = document.getElementById("formFieldsView");
+        while (formFieldsContainer.hasChildNodes()) {
+          formFieldsContainer.removeChild(formFieldsContainer.firstChild);
+        }
       }
     </script>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
