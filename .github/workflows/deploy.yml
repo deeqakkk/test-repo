@@ -35,7 +35,7 @@ jobs:
       run: |
         aws elasticbeanstalk create-application-version \
         --application-name "grynow" \
-        --version-label '1.1.7' \
+        --version-label '2.0' \
         --source-bundle S3Bucket=${{ secrets.S3_BUCKET }},S3Key='Dockerrun.aws.json'
 
     - name: Deploy
