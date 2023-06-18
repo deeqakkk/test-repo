@@ -1,37 +1,94 @@
-# eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiNjQ4Y2I1Mjg0Zjc0ODJiNDAwNWNhOWEwIiwiZW1haWwiOiJyYWpuZWVzaEBnbWFpbC5jb20ifQ.GT5tCxDPe0n4QJeDIuJXAFslT4iCCuGOZ-GR4LSFySA
-# eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiNjQ4Y2I1Mjg0Zjc0ODJiNDAwNWNhOWEwIiwiZW1haWwiOiJyYWpuZWVzaEBnbWFpbC5jb20ifQ.GT5tCxDPe0n4QJeDIuJXAFslT4iCCuGOZ-GR4LSFySA
-openapi: '3.0.3'
+openapi: "3.0.3"
 info:
-  description: 'API Documentation'
-host: 'localhost:8080'
+  description: "API Documentation"
+host: "http://grynow.ap-south-1.elasticbeanstalk.com"
 tags:
 schemes:
-- http
+  - http
 paths:
+  /:
+    get:
+      tags:
+        - Login Template
+      summary: Get Login page Template
+      description: platform test
+      operationId: login_page
+      responses:
+        "200":
+          description: successful operation
+        "400":
+          description: Invalid status value
   /test:
     get:
       tags:
-      - index
-      summary: index
+        - Test Platform
+      summary: Test platform
       description: platform test
       operationId: index
       responses:
-        '200':
+        "200":
           description: successful operation
-        '400':
+        "400":
           description: Invalid status value
+  # /auth/login:
+  #   post:
+  #     tags:
+  #       - Login
+  #     summary: Auth Route
+  #     description: login route
+  #     operationId: login
+  #     requestBody:
+  #       required: true
+  #       content:
+  #         application/json:
+  #           schema:
+  #             $ref: "#/components/schemas/AuthRequestBody"
+  #     responses:
+  #       "200":
+  #         description: successful operation
+  #       "400":
+  #         description: Invalid status value
   /user:
     get:
       tags:
-      - user 
+        - user
       description: Get user data
       operationId: getuser
       security:
         - token: []
       responses:
-        '200':
+        "200":
           description: successful operation
-        '400':
+        "400":
+          description: Invalid status value
+  /apps:
+    get:
+      tags:
+        - All Apps
+      description: Get user data
+      operationId: getuser
+      responses:
+        "200":
+          description: successful operation
+        "400":
+          description: Invalid status value
+  /apps/create:
+    post:
+      tags:
+        - CreateCustomApp
+      summary: Custom App
+      description: custom app
+      operationId: custom_app
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CustomAppCreateRequest"
+      responses:
+        "200":
+          description: successful operation
+        "400":
           description: Invalid status value
 
 components:
@@ -40,4 +97,68 @@ components:
       type: http
       scheme: bearer
       bearerFormat: JWT
-
+  schemas:
+    AuthRequestBody:
+      required:
+        - email
+        - password
+      properties:
+        email:
+          type: string
+        password:
+          type: string
+    CustomAppCreateRequest:
+      required:
+        - data_list
+      properties:
+        data_list:
+          type: array
+          items:
+            type: object
+            properties:
+              name:
+                type: string
+              description:
+                type: string
+              category:
+                type: string
+              images:
+                type: array
+                items:
+                  type: string
+              display_image:
+                type: string
+              form_fields:
+                type: array
+                items:
+                  $ref: "#/components/schemas/FormField"
+              published:
+                type: boolean
+              app_info:
+                type: object
+                properties:
+                  developer:
+                    type: string
+    FormField:
+      type: object
+      properties:
+        label:
+          type: string
+        type:
+          type: string
+          enum: [text, number, password, email, checkbox, textarea, select]
+        required:
+          type: boolean
+        meta:
+          type: object
+          properties:
+            max_length:
+              type: integer
+            min_length:
+              type: integer
+        name:
+          type: string
+        placeholder:
+          type: string
+        helper_text:
+          type: string

@@ -22,6 +22,14 @@ def configure():
     app = cac.get_app_by_id(app_id)
     return compose_response(app)
 
+@custom_app_blueprint.route("/create", methods=["POST"])
+def create_app():
+    user_id = os.getenv("USER_ID")
+    data = request.json
+    data["user_id"] = user_id
+    response = cac.create_apps(data["data_list"])
+    return compose_response(response)
+
 @custom_app_blueprint.route("/user/create", methods=["POST"])
 def create_user_app():
     user_id = os.getenv("USER_ID")
