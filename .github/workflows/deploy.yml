@@ -44,4 +44,4 @@ jobs:
         aws elasticbeanstalk update-environment \
         --application-name "grynow" \
         --environment-name "grynow-env" \
-        --version-label 'latest'
+        --version-label '1'
