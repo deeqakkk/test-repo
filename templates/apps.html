@@ -196,16 +196,7 @@
             <h3>{{ app.name }}</h3>
             <p>{{ app.category }}</p>
             <p>{{ app.description }}</p>
-            <!-- <button class="configure-btn" onclick="configure('{{ app.name }}')">
-              Configure
-            </button> -->
-            <!-- <button
-              class="configure-btn"
-              id="formModalButton"
-              data-app-name="{{app.name}}"
-            >
-              Configure
-            </button> -->
+
             <button class="configure-btn" onclick="openModal2('{{app.name}}')">
               Configure
             </button>
@@ -227,10 +218,6 @@
             <h3>{{ app.name }}</h3>
             <p>{{ app.category }}</p>
             <p>{{ app.description }}</p>
-
-            <button class="configure-btn2" id="formModalButton">
-              Configure
-            </button>
 
             <button
               class="app-details-btn"
@@ -292,7 +279,7 @@
       <div class="modal-dialog" role="document">
         <div class="modal-content">
           <div class="modal-header">
-            <h5 class="modal-title" id="formModalLabel">Dynamic Form</h5>
+            <h5 class="modal-title" id="formModalLabel" value=""></h5>
             <button
               type="button"
               class="close"
@@ -304,7 +291,7 @@
             </button>
           </div>
           <div class="modal-body">
-            <form id="dynamicForm" method="POST" action="/apps/abcd">
+            <form id="dynamicForm" method="POST" onsubmit="createUserApp()">
               <div id="formFields"></div>
               <div class="modal-footer">
                 <button
@@ -314,19 +301,42 @@
                 >
                   Close
                 </button>
-                <button type="submit" form="dynamicForm" class="btn btn-primary">
+                <button
+                  type="submit"
+                  form="dynamicForm"
+                  class="btn btn-primary"
+                >
                   Submit
+                </button>
+              </div>
             </form>
-            <div id="responseMessage" class="mt-3" style="display: none"></div>
-          </div>
-          
-            </button>
           </div>
         </div>
       </div>
     </div>
 
     <script>
+      function createUserApp(appId) {
+        const appName = document.getElementById("formModalLabel").innerText;
+        const app = findAppByName(appName);
+        var formData = new FormData(document.getElementById("dynamicForm"));
+        var jsonData = {};
+        formData.forEach(function (value, key) {
+          jsonData[key] = value;
+        });
+        jsonData["app_id"] = app.id;
+
+        var xhr = new XMLHttpRequest();
+        xhr.open("POST", "/apps/user/create", true);
+        xhr.setRequestHeader("Content-Type", "application/json");
+
+        xhr.onreadystatechange = function () {
+          if (xhr.readyState === XMLHttpRequest.DONE && xhr.status === 200) {
+            console.log(xhr.responseText);
+          }
+        };
+        xhr.send(JSON.stringify(jsonData));
+      }
       function openModal(appName) {
         const app = findAppByName(appName);
         if (app) {
@@ -410,6 +420,7 @@
         evt.currentTarget.className += " active";
       }
       document.getElementById("tab1").style.display = "block";
+      document.getElementById("tab2").style.display = "None";
 
       function getFormFields(appName) {
         var app = findAppByName(appName);
@@ -426,7 +437,7 @@
               const formFields = response.data.form_fields;
 
               const formFieldsContainer = document.getElementById("formFields");
-
+              document.getElementById("formModalLabel").innerText = app.name;
               // Iterate over the form fields and create the corresponding HTML elements
               formFields.forEach((field) => {
                 const fieldContainer = document.createElement("div");

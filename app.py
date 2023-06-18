@@ -16,7 +16,8 @@ app = Flask(__name__)
 def register_blueprints(swagger_blueprint):
     blueprints = [
         swagger_blueprint, auth_blueprint, 
-        user_blueprint, custom_app_blueprint
+        user_blueprint, custom_app_blueprint,
+        user_app_blueprint
         ]
     for blueprint in blueprints:
         app.register_blueprint(blueprint)

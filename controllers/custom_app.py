@@ -4,6 +4,9 @@ from dataclasses import asdict
 from models.custom_apps import AppInfo, CustomApp
 from models.form_field import FieldMeta, FormField
 from utils.errors import CustomError
+from controllers.user_app import UserAppController
+
+uac  = UserAppController()
 
 class CustomAppController:
     def create_apps(self, data_list):
@@ -21,7 +24,7 @@ class CustomAppController:
             app.create()
         return True
 
-    def get_apps(self):
+    def get_apps(self, user_id):
         apps = CustomApp.find()
         response = []
         for app in apps:
@@ -29,8 +32,11 @@ class CustomAppController:
             app["id"] = str(app["id"])
             del app["_id"]
             response.append(app)
+        user_apps = []
+        if user_id is not None:
+            user_apps = uac.get_user_apps(user_id)
         
-        return {"apps": response, "my_apps": []}
+        return {"apps": response, "my_apps": user_apps}
     
     def get_app_by_id(self, app_id: str):
         app = CustomApp.find_one({"_id": ObjectId(app_id)})
@@ -39,4 +45,8 @@ class CustomAppController:
         app.id = str(app.id)
         app._id = str(app._id)
         return app.dict()
+    
+    def create_user_app(self, data):
+        response = uac.create_user_app(data)
+        return response
 

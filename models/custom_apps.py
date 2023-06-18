@@ -25,4 +25,6 @@ class CustomApp(Document):
     form_fields: list[FormField] = []
     app_info: AppInfo = AppInfo()
     published: bool = False
+    created_at: float = time()
+    updated_at: float = time()
 
